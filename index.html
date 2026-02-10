@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test de Estrategias de Aprendizaje</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .options {
+      margin-top: 10px;
+    }
+    .option {
+      margin: 5px 0;
+    }
+    #result {
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<img src="./backgrn.png" />
+
+
+  <h1>Test de Autoevaluación para evaluar la comprensión de las Tipologías de Estrategias de Aprendizaje</h1>
+  <p>Estimado estudiante este instrumento tiene un propósito formativo y puedes repetirlo las veces que consideres necesario. Sigue las instrucciones de tu docente de acuerdo a la actividad desarrollada.</p>
+  
+  <form id="quizForm">
+    <div id="quizContainer"></div>
+    <button type="button" onclick="calcularResultado()">Enviar respuestas</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    // Array de preguntas con opciones y respuesta correcta (índice)
+    const preguntas = [
+      {
+        pregunta: "¿Cuál es el principal objetivo de implementar estrategias de aprendizaje?",
+        opciones: [
+          "a) Recibir información de manera pasiva.",
+          "b) Procesar, estructurar y aplicar la información de forma efectiva.",
+          "c) Memorizar datos sin cuestionar su significado.",
+          "d) Depender exclusivamente de la enseñanza tradicional."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "¿Cuál de los siguientes beneficios NO se asocia a las estrategias de aprendizaje?",
+        opciones: [
+          "a) Mejora de la comprensión y retención de información.",
+          "b) Desarrollo del aprendizaje autónomo.",
+          "c) Optimización del tiempo de estudio.",
+          "d) Incremento de la dependencia en el docente."
+        ],
+        respuesta: 3
+      },
+      {
+        pregunta: "¿Cuál es la diferencia fundamental entre una técnica de aprendizaje y una estrategia de aprendizaje?",
+        opciones: [
+          "a) La técnica es un plan de acción global y la estrategia es una acción específica.",
+          "b) La técnica es una acción específica (ej. subrayar) y la estrategia es un plan de acción que integra diversas técnicas.",
+          "c) No existe diferencia; ambos términos significan lo mismo.",
+          "d) La técnica evalúa el aprendizaje, mientras que la estrategia lo planifica."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "¿Cuál de las siguientes opciones es un ejemplo de estrategia de ensayo?",
+        opciones: [
+          "a) Elaborar un mapa conceptual.",
+          "b) Parafrasear un contenido.",
+          "c) Repetir en voz alta la información para reforzar la memoria.",
+          "d) Establecer metas de estudio."
+        ],
+        respuesta: 2
+      },
+      {
+        pregunta: "Las estrategias de elaboración se basan en:",
+        opciones: [
+          "a) La repetición de contenidos para su memorización.",
+          "b) La integración de la nueva información con conocimientos previos mediante la creación de analogías o ejemplos.",
+          "c) La organización de la información en esquemas y mapas mentales.",
+          "d) La regulación de emociones durante el estudio."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "¿Cuál de las siguientes actividades es típica de las estrategias de organización?",
+        opciones: [
+          "a) Repetir en voz alta conceptos clave.",
+          "b) Elaborar esquemas y mapas conceptuales que estructuren la información.",
+          "c) Autoevaluarse al final de una sesión de estudio.",
+          "d) Manejar el estrés mediante técnicas de relajación."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "Las estrategias de control de la comprensión se caracterizan por:",
+        opciones: [
+          "a) Repetir información sin reflexionar sobre ella.",
+          "b) Planificar, monitorear y evaluar el propio proceso de aprendizaje.",
+          "c) Organizar la información sin necesidad de autoevaluación.",
+          "d) Emplear exclusivamente técnicas de subrayado."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "¿Qué tipo de estrategia se enfoca en crear condiciones favorables para el estudio, como el manejo del estrés o la organización del tiempo?",
+        opciones: [
+          "a) Estrategia de ensayo.",
+          "b) Estrategia de apoyo o afectiva.",
+          "c) Estrategia de elaboración.",
+          "d) Estrategia de control de la comprensión."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "¿Qué estilo de aprendizaje se asocia con la preferencia por el uso de diagramas, gráficos y mapas conceptuales?",
+        opciones: [
+          "a) Visual.",
+          "b) Auditivo.",
+          "c) Kinestésico.",
+          "d) Reflexivo."
+        ],
+        respuesta: 0
+      },
+      {
+        pregunta: "¿Qué significa “aprender a aprender”?",
+        opciones: [
+          "a) Memorizar información sin analizarla.",
+          "b) Recibir información de forma pasiva.",
+          "c) Desarrollar la capacidad para autorregular y adaptar el proceso de aprendizaje a diferentes contextos.",
+          "d) Utilizar solo una técnica de estudio preestablecida."
+        ],
+        respuesta: 2
+      },
+      {
+        pregunta: "Un ejemplo práctico de una estrategia de ensayo es:",
+        opciones: [
+          "a) Crear tarjetas de estudio para repasar antes de un examen.",
+          "b) Elaborar un diagrama de flujo para organizar un proceso.",
+          "c) Establecer objetivos de estudio y evaluarlos al final.",
+          "d) Practicar técnicas de relajación para disminuir la ansiedad."
+        ],
+        respuesta: 0
+      },
+      {
+        pregunta: "Al seleccionar una estrategia de aprendizaje, es importante considerar todos los siguientes aspectos, EXCEPTO:",
+        opciones: [
+          "a) El tipo de contenido a estudiar.",
+          "b) Los conocimientos previos sobre el tema.",
+          "c) El tipo de evaluación que se realizará.",
+          "d) La cantidad de amigos que tengas en clase."
+        ],
+        respuesta: 3
+      },
+      {
+        pregunta: "Una ventaja del aprendizaje estratégico frente a un hábito de estudio rígido es que:",
+        opciones: [
+          "a) Permite la transferencia de conocimientos a diferentes contextos.",
+          "b) Es más difícil de modificar una vez establecido.",
+          "c) Se basa únicamente en la repetición sin reflexión.",
+          "d) Requiere menos esfuerzo para su ejecución."
+        ],
+        respuesta: 0
+      },
+      {
+        pregunta: "¿Cuál de las siguientes afirmaciones resume correctamente la diferencia entre técnica y estrategia?",
+        opciones: [
+          "a) Una técnica se aplica dentro de una estrategia, mientras que la estrategia engloba varias técnicas para lograr un objetivo de aprendizaje.",
+          "b) Una estrategia es una acción específica, y la técnica es un conjunto de planes de acción.",
+          "c) Técnica y estrategia son sinónimos y se pueden usar indistintamente.",
+          "d) La técnica evalúa el aprendizaje, mientras que la estrategia únicamente organiza la información."
+        ],
+        respuesta: 0
+      },
+      {
+        pregunta: "¿Cuál de las siguientes actividades corresponde a las estrategias de elaboración?",
+        opciones: [
+          "a) Repetir en voz alta la información estudiada.",
+          "b) Parafrasear el contenido y relacionarlo con experiencias personales.",
+          "c) Elaborar un cuadro sinóptico.",
+          "d) Manejar el estrés antes de una evaluación."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "Según la clasificación basada en el proceso cognitivo y finalidad, las estrategias de organización tienen como función principal:",
+        opciones: [
+          "a) Mejorar la memorización a través de la repetición.",
+          "b) Estructurar y visualizar la información para facilitar su comprensión.",
+          "c) Regular las emociones del estudiante durante el estudio.",
+          "d) Evaluar el rendimiento sin necesidad de estructurar la información."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "En el contexto de las estrategias de control de la comprensión, ¿cuál es el papel de la metacognición?",
+        opciones: [
+          "a) Memorizar datos sin reflexionar sobre ellos.",
+          "b) Planificar, supervisar y ajustar el propio proceso de aprendizaje.",
+          "c) Organizar la información en esquemas sin autoevaluarse.",
+          "d) Repetir la información sin buscar retroalimentación."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "La relación entre estrategias de aprendizaje y estilos de aprendizaje indica que:",
+        opciones: [
+          "a) Todas las estrategias son igualmente efectivas para cualquier estilo de aprendizaje.",
+          "b) Las estrategias deben adaptarse a las preferencias individuales, como el estilo visual, auditivo o kinestésico.",
+          "c) Los estilos de aprendizaje no influyen en la elección de las estrategias.",
+          "d) Solo el estilo visual puede beneficiarse de estrategias de organización."
+        ],
+        respuesta: 1
+      },
+      {
+        pregunta: "Una de las siguientes opciones es un ejemplo de una estrategia de apoyo o afectiva:",
+        opciones: [
+          "a) Subrayar información clave en un texto.",
+          "b) Elaborar un mapa conceptual.",
+          "c) Utilizar una agenda para organizar el tiempo y aplicar técnicas de manejo del estrés.",
+          "d) Repetir conceptos en voz alta."
+        ],
+        respuesta: 2
+      },
+      {
+        pregunta: "¿Cuál es el propósito principal de integrar estrategias de aprendizaje en el proceso educativo?",
+        opciones: [
+          "a) Aplicar técnicas aisladas sin un plan general.",
+          "b) Gestionar de manera integral el proceso de aprendizaje, optimizando la comprensión, memorización y aplicación de la información.",
+          "c) Limitarse a memorizar información sin realizar conexiones con conocimientos previos.",
+          "d) Evitar la autoevaluación y la reflexión sobre el propio aprendizaje."
+        ],
+        respuesta: 1
+      }
+    ];
+
+    // Función para mezclar el arreglo de preguntas de forma aleatoria
+    function mezclar(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    // Cargar y mostrar las preguntas en orden aleatorio
+    const quizContainer = document.getElementById("quizContainer");
+    const preguntasMezcladas = mezclar(preguntas.slice()); // Clonamos y mezclamos
+
+    preguntasMezcladas.forEach((item, index) => {
+      // Crear contenedor para cada pregunta
+      const contenedorPregunta = document.createElement("div");
+      contenedorPregunta.className = "question";
+      // Mostrar pregunta
+      const preguntaElemento = document.createElement("p");
+      preguntaElemento.textContent = item.pregunta;
+      contenedorPregunta.appendChild(preguntaElemento);
+
+      // Crear opciones
+      const opcionesContenedor = document.createElement("div");
+      opcionesContenedor.className = "options";
+      item.opciones.forEach((opcion, idx) => {
+        const label = document.createElement("label");
+        label.className = "option";
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "pregunta" + index;
+        radio.value = idx;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(" " + opcion));
+        opcionesContenedor.appendChild(label);
+        opcionesContenedor.appendChild(document.createElement("br"));
+      });
+
+      contenedorPregunta.appendChild(opcionesContenedor);
+      quizContainer.appendChild(contenedorPregunta);
+    });
+
+    // Función para calcular el resultado
+    function calcularResultado() {
+      let puntaje = 0;
+      preguntasMezcladas.forEach((item, index) => {
+        const selector = "input[name='pregunta" + index + "']:checked";
+        const respuestaSeleccionada = document.querySelector(selector);
+        if (respuestaSeleccionada && parseInt(respuestaSeleccionada.value) === item.respuesta) {
+          puntaje++;
+        }
+      });
+      const resultDiv = document.getElementById("result");
+      resultDiv.textContent = "Tu puntaje es: " + puntaje + " de " + preguntasMezcladas.length;
+    }
+  </script>
+</body>
+</html>
